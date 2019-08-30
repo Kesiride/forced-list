@@ -1,0 +1,15 @@
+<section>
+    <mat-card class="add-task-card">
+        <mat-card-title>{{cardTitle}}</mat-card-title>
+        <section>
+            <mat-card class="task-name">
+                <mat-form-field appearance="outline" color="warn" class="form-field">
+                    <input matInput placeholder="Add Task" [(ngModel)]="newTask">
+            </mat-form-field>
+            <mat-card-actions>
+                    <button mat-raised-button (click)="addTask(newTask)" class="card-button">Add Task</button>
+            </mat-card-actions>
+            </mat-card>
+        </section>
+    </mat-card>
+</section>

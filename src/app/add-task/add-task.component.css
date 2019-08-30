@@ -1,0 +1,24 @@
+ .task-name{
+    background-color: white;
+    position: relative;
+    color: black;
+}
+
+.add-task-card{
+    background-color: white;
+    color: black;
+}
+
+/* .space{
+    background-color: white;
+}  */
+
+.card-button{
+    background-color: black;
+    position: relative;
+    left: 55px;
+}
+
+.form-field{
+    color: gray;
+}
