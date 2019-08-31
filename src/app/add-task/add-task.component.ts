@@ -1,6 +1,8 @@
-import { Component, OnInit, OnChanges } from '@angular/core';
+import { Component, OnInit, OnChanges, Output, EventEmitter } from '@angular/core';
 import { TaskService } from '../task-list/task-list.service';
 import { Task } from '../task-list/task';
+import { TaskListComponent } from '../task-list/task-list.component';
+import { Observable } from 'rxjs';
 
 @Component({
     selector: 'app-add-task',
@@ -10,26 +12,18 @@ import { Task } from '../task-list/task';
 
 export class AddTaskComponent {
     // tslint:disable-next-line: no-inferrable-types
+    @Output() createTask: EventEmitter<Task>;
     cardTitle: string = 'Nephew\'s Add Task';
-    tasks: Task[] = [];
+    tasks: Observable<Task[]>;
     task: Task = {id: null, name: ''};
     errorMessage: string;
 
-    constructor(private taskService: TaskService) {}
-
-    getTasks() {
-        this.taskService.getTask().subscribe({
-            next: data => this.tasks = data,
-            error: err => this.errorMessage = err
-        });
+    constructor() {
+        this.createTask = new EventEmitter<Task>();
     }
 
     addTask(taskName: string) {
-        this.task = {id: null, name: taskName};
-
-        this.taskService.addTask(this.task).subscribe({
-            error: err => this.errorMessage = err
-        });
-        this.getTasks();
+        this.task.name = taskName;
+        this.createTask.emit(this.task);
     }
 }

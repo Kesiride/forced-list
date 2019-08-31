@@ -2,6 +2,7 @@ import { Component, OnInit, OnChanges, Input, SimpleChanges } from '@angular/cor
 import { TaskService } from './task-list.service';
 import { Task } from './task';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import { Observable } from 'rxjs';
 
 @Component({
     selector: 'app-task-list',
@@ -9,36 +10,27 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons';
     styleUrls: ['./task-list.component.css']
 })
 
-export class TaskListComponent implements OnInit, OnChanges {
+export class TaskListComponent implements OnInit {
     // tslint:disable-next-line: no-inferrable-types
     faTimes = faTimes;
     cardTitle: string = 'Nephew\'s Task List';
-    @Input()
-    tasks: Task[] = [];
+    tasks: Observable<Task[]>;
     errorMessage: string;
+    task: Task = {id: null, name: ''};
 
     constructor(private taskService: TaskService) {}
 
     getTasks() {
-        this.taskService.getTask().subscribe({
-            next: data => this.tasks = data,
-            error: err => this.errorMessage = err
-        });
+        this.tasks = this.taskService.getTask();
     }
 
     ngOnInit(): void {
         this.getTasks();
     }
 
-    ngOnChanges(changes: SimpleChanges): void {
-        if (changes.tasks) {
-            this.getTasks();
-        }
-    }
-
-    removeTask(id: number) {
-        this.taskService.removeTask(id).subscribe(data => {
-            this.getTasks();
-          });
+    removeTask(id, name) {
+        this.task.id = id;
+        this.task.name = name;
+        this.taskService.removeTask(this.task);
     }
 }
